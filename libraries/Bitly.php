@@ -185,6 +185,27 @@ class Bitly {
 	}
 
 	/**
+	* Validates a Pro Domain
+	*
+	* @param string bit.ly pro domain
+	* @return mixed (format != json) string | (format == json) bool
+	* @author Patrick Popowicz
+	*/
+	public function pro_domain($domain = '', $verbose = FALSE)
+	{
+		// Check the targets and build the params array
+		$params['domain']	= $domain;
+		$params['format']	= $this->bitly_format;
+		
+		if ($this->_execute('bitly_pro_domain', $params))
+		{
+			// Determine what to return
+			return ($verbose) ? $this->response : (($this->bitly_format == 'json') ? $this->response['data']['bitly_pro_domain'] : $this->response);
+		}
+		else { return FALSE; }
+	}
+
+	/**
 	* Executes the API request using cURL
 	*
 	* @param string $method API method being used
@@ -227,6 +248,17 @@ class Bitly {
 			return TRUE;
 		}
 		else { return FALSE; }
+	}
+	
+	/**
+	* Returns the response value
+	*
+	* @return mixed
+	* @author Patrick Popowicz
+	*/
+	public function response()
+	{
+		return $this->response;
 	}
 }
 
